@@ -1,0 +1,158 @@
+﻿Nations.N32A455_Library.1.5.0版本：
+1. FLASH驱动中编写FLASH和选项字节相关函数中，调用FLASH_WaitForLastOpt改为传入局部变量
+2. system.c文件中FLASH latency注释改为与sysclk相关
+3. 优化I2C例程中i2c_master_recv函数2字节处理流程
+4. OPA模块新增OpaTrim的例程
+
+Nations.N32A455_Library.1.4.0版本：
+1.更新FLASH驱动，添加页擦的地址判断
+2.更新USART demo，更改IO配置和添加OREF处理
+3.STOP2例程增加STOP2模式下只有R-SRAM可以保持的注意事项描述
+4.RTC中读取TSH寄存器、SUBS寄存器后再读取一次DATE寄存器触发同步
+5.SPI_Flash Demo中sFLASH_SendByte()函数和sFLASH_SendHalfWord()函数中发送完数据后先获取TE和BUSY标志，之后才获取RNE标志
+6.RTC中AutoWakeup中断改成获取EXTI标志
+7.优化DMA模块驱动DMA_DeInit函数
+8.STOP2例程添加注释
+9.优化SystemInit函数
+10.优化I2C EEPROM例程，防止低主频下数据出错
+11.添加I2C双地址例程
+12.新增GCC应用示例
+13.所有RTC的Demo闹钟设置DateWeekValue从0x31改成31
+14.优化RCC驱动RCC_ConfigRtcClk()函数
+15.修正ADC_GetFlagStatusNew函数中的断言
+16.优化ADC温度传感器的demo
+17.优化ADC_StartCalibration与ADC_GetCalibrationStatus函数
+18.修正TIM复用的宏定义GPIO_PART2_RMP_TIM3
+19.添加RCC_ConfigLSETrim函数，LSE使能时默认配置为0x145
+
+Nations.N32A455_Library.1.3.0版本：
+1. 修改system_n32g45x.c中的SystemInit函数
+2. EXTI中断服务函数中获取标志位修改为EXTI_GetStatusFlag函数
+3. 进入STOP2或STANDBY模式前添加时钟配置流程
+4. 优化RTC_CLKSourceConfig函数
+5. 优化RTC驱动函数RTC_GetTime
+
+Nationstech.N32A455_Library.1.2.0版本：
+1.增加函数TIM_ConfigUpdateEvt。
+2.修改ADC驱动n32a455_adc.c与.h文件，拓展ADC_GetIntStatus()，ADC_ConfigInt()函数的传参；
+3.修改ADC demo中ADC DMA使能的位置以及关于ENDC/JENDC使用；
+4.删除DEMO中DBG配置和描述
+5.修改RTC_EnterInitMode函数
+6. 删除ICache的coremark demo
+7. CAN模块CAN_Tx_Rx/Dual_CAN1_2/LoopBack_CAN1三个demo，Systick_MS_Config函数去掉封装，改为直接调用的形式
+8. USART模块在DMA_Interrupt/Interrupt/LIN_slave DEMO中，中断函数中添加对ORERR/PEF/NEF/FEF标志的判断和清除操作。
+9.优化PWR模块AlarmWakeUp DEMO和STOP DEMO
+10.修改RCC、I2C例程报错处理方式
+11.修改system_n32a455.c：初始化开icache，关预取
+12.驱动n32a455_adc.c中，ADC_GetIntStatus()与ADC_GetFlagStatus()增加延时处理
+13.修改中文字符
+14.优化TIM模块ComplementarySignals DEMO
+15.优化TIM_InitBkdtStruct结构体
+16.修改宏定义GPIO_RMP2_SPI2为GPIO_RMP3_SPI2
+17.优化PWR模块的PWR_AlarmWakeUp、STOP0和STOP2例程：进STOP模式前将系统时钟源配置为HSI。
+
+Nationstech.N32A455_Library.1.0.0版本：
+1.V1.0.0初始版本
+
+Nationstech.N32A455_Library.1.1.0版本：
+1.USART:
+	新增SmartCard 例程
+2.QSPI:
+	优化QSPI GPIO配置
+3.system_n32a455.c新增VDDDBK trim调节函数
+4.修改ADC校准和ADC使能后延时8us
+5.RCC新增HSI修正接口
+6.修改system_n32a455.c文件，限定选择PLL为时钟源时，系统时钟最小为32MHz
+7.修改SPI DMA读写Flash在某些SPI分频下失败的问题
+8.修改 LoopBack_CAN1  readme.txt CAN_TX/RX引脚标注
+9.在OpaAdByTim Demo中，将TIM死区时间插入配置中自动输出项修改成失能
+10.TIM的demo中增加结构体初始化
+11.修改Dual_CAN1_2例程Readme CAN_TX/RX引脚注释
+12.修改IWDG_Reset例程延时时间
+13.修改WWDG_Reset例程Readme注释超时复位时间
+14.RtcAutoWakeUp 例程进入唤醒中断后先清EXTI_LINE20标志
+15.修改DMA的demo中注释错误和readme错误的地方
+16.RTC例程增加避免重复预分频机制
+17.I2C_10bit demo的readme中添加需要上拉电阻的描述
+18.QSPI_QUAD demo中未使用DMA，删除相关描述
+19.RTC唤醒例程中，中断函数内判断唤醒标志位后再删除标志位修改为直接清除标志位
+20.qspi.c文件中PA7初始化代码错误，修正
+21.配置latency由直接操作寄存器修改为调用库函数
+
+/*===================================================================================================================*/
+Nations.N32A455_Library.1.4.0 version:
+1. Update FLASH driver and add address determination for page erase
+2. Update the USART demo, change IO configuration, and add OREF processing
+3. Added a note to the STOP2 example describing that only R-SRAM can be retained in STOP2 mode.
+4. After reading the TSH register and SUBS register in the RTC, read the DATE register once more to trigger synchronization.
+5. In the SPI_Flash Demo, the sFLASH_SendByte() and sFLASH_SendHalfWord() functions first acquire the TE and BUSY flags after sending data, and only then acquire the RNE flag.
+6. In the AutoWakeup demo , interrupt has been changed to acquiring the EXTI flag.
+7. Optimized DMA Module Driver DMA_DeInit Function.
+8. STOP2 demo add note.
+9. Optimize the SystemInit function.
+10. Optimize the I2C EEPROM demo to prevent data errors at low clock frequencies.
+11. Add I2C Dual Address demo.
+12. Added GCC Application Examples.
+13. For all RTC demo alarm settings, change the DateWeekValue from 0x31 to 31.
+14. Optimize the RCC driver function RCC_ConfigRtcClk().
+15. Modify assertions in the ADC_GetFlagStatusNew function
+16. Optimize the ADC temperature sensor demo
+17. Optimize the ADC_StartCalibration and ADC_GetCalibrationStatus functions
+18. Modified macro definition for TIM remap: GPIO_PART2_RMP_TIM3
+19. Added RCC_ConfigLSETrim function, When LSE is enabled, the default configuration is 0x145.
+
+Nations.N32A455_Library.1.3.0 version:
+1.Modify SystemInit function in system_n32g45x.c
+2.EXTI interrupt handle function,get flag with EXTI_GetStatusFlag function
+3.Add clock config before enter STOP2/STANDBY mode
+4.Modify RTC_CLKSourceConfig function
+5.Modify RTC_GetTime function in rtc.c
+
+Nationstech.N32A455_Library.1.2.0 version:
+1.Added TIM_ConfigUpdateEvt.
+2.Modify the driver file n32a455_adc.c/.h for ADC , and expand the parameters of "ADC_GetIntStatus()，ADC_ConfigInt()" function;
+3.Modify the code position of the ADC DMA enabling  in ADC demo ,and modify the usage of ENDC/JENDC flag.
+4.Delect DBG configuration and discription in DEMO
+5.Modify RTC_EnterInitMode function.
+6. Delete the coremark demo of ICache.
+7. CAN module CAN_Tx_Rx/Dual_CAN1_2/LoopBack_CAN1 demos, remove the wrapping of Systick_MS_Config function and replace it with a direct call.
+8. USART module in the DMA_Interrupt/Interrupt/LP_Transmit_Receive/Transmit_Receive/LIN_slave DEMO, interrupt function to add the ORERR/PEF/NEF/FEF flag judgment and clear the operation.
+9.Optimized PWR module AlarmWakeUp DEM and STOP DEMO.
+10.Modify the error handling of RCC and I2C routines.
+11.Modify system_n32a455.c：Initialization with icache on, prefetch off
+12.ADC_GetIntStatus and ADC_GetFlagStatus functions in n32a455_adc.c file to add delay processing
+13.Modify chinese characters
+14.Optimized TIM module ComplementarySignals DEMO.
+15.Optimized TIM_InitBkdtStruct.
+16.Modify macro definition GPIO_RMP2_SPI2 to GPIO_RMP3_SPI2
+17.Optimize PWR_AlarmWakeUp, STOP0 and STOP2 demo of PWR module: configure the system clock source to HSI before entering STOP mode
+
+
+Nationstech.N32A455_Library.1.0.0 version:
+1.V1.0.0 initial version
+
+Nationstech.N32A455_Library.1.1.0 version:
+1.USART:
+	Added SmartCard demo
+2.QSPI：
+	
+	Optimize QSPI GPIO driver configuration
+3.Added VDDDBK trim function in the system_n32a455.c.
+4.Modify ADC need to delay 8us after ADC Calibration and ADC enable.
+5.Added HSI TRIM function in the RCC. 
+6.Modify system_n32a455.c.file ,when PLL is selected as system clock source, the minimum system clock is 32MHz
+7.Modify the problem that SPI DMA read and write Flash fails under certain SPI frequency division
+8.Modify CAN_TX/RX pin lable in readme.txt of LoopBack_CAN1 demo
+9.In the OpaAdByTim demo, change the Auto Output item in dead-time configuration to disable.
+10.Added structure initializes of tim's demo.
+11.Modify CAN_TX/RX pin lable in the Dual_CAN1_2 demo readme file
+12.Modify the delay time of IWDG_Reset demo
+13.Modify WWDG_Reset demo readme lable timeout reset time
+14.RtcAutoWakeUp demo clear EXTI_LINE20 flag first after entering wakeup interrupt
+15.Modify comments and readme errors in DMA's demo
+16.Adding a machanism to avoid repetitive pre division in RTC demo
+17.I2C_10bit demo's readme adds description of pull_up resistor
+18.Remove the description of DMA from the QSPI_QUAD's readme
+19.Clear the wake up flag directly in the interrupt handler,in the RtcAutoWakeUp demo.
+20.PA7 initialization code error in qspi.c, fixed.
+21.Configuration latency is modified from direct register manipulation to libraryfunction calls.
